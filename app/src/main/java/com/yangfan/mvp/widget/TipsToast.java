@@ -1,75 +1,84 @@
 package com.yangfan.mvp.widget;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.os.Build;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yangfan.mvp.helper.ContextHelper;
 import com.yangfan.mvp.R;
 import com.yangfan.mvp.helper.ContextHelper;
+
 
 /**
  * 自定义提示Toast
  * 
  * @author yangfan
  */
-public class TipsToast extends Toast {
-    private static TipsToast tipsToast;
-    public TipsToast(Context context) {
-        super(context);
+public class TipsToast {
+    private static final int LONG_DELAY = 3500; // 3.5 seconds
+    private static final int SHORT_DELAY = 2000; // 2 seconds
+    private static String oldMsg;
+
+    private static long lastTime = 0;
+
+    private Toast toast = null;
+    private View layoutToast;
+    private TextView tvToast;
+    private ImageView ivToast;
+    private static TipsToast tipsToast = new TipsToast();
+
+    public static synchronized void showTips(String content){
+        showTips(content,0);
     }
 
-    public static TipsToast makeText(Context context, CharSequence text, int duration) {
-        TipsToast result = new TipsToast(context);
+    public static synchronized void showTips(String content, int res) {//  0
+        cancelToast();
+        if (tipsToast.toast == null) {
+            tipsToast.toast = new Toast(ContextHelper.getApplication());
+            tipsToast.toast.setGravity(Gravity.CENTER, 0, 0);
+            tipsToast.layoutToast = LayoutInflater.from(ContextHelper.getApplication()).inflate(R.layout
+                    .view_tips, null);
 
-        LayoutInflater inflate = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflate.inflate(R.layout.view_tips, null);
-        TextView tv = (TextView) v.findViewById(R.id.tips_msg);
-        if(tv!=null&&!TextUtils.isEmpty(text)){
-            tv.setText(text);
-
-            result.setView(v);
-            // setGravity方法用于设置位置，此处为垂直居中
-            result.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            result.setDuration(duration);
-        }
-        return result;
-    }
-
-    public static TipsToast makeText(Context context, int resId, int duration) throws Resources.NotFoundException {
-        return makeText(context, context.getResources().getText(resId), duration);
-    }
-
-    @Override
-    public void setText(CharSequence s) {
-        if (getView() == null) {
-            throw new RuntimeException("This Toast was not created with Toast.makeText()");
-        }
-        TextView tv = (TextView) getView().findViewById(R.id.tips_msg);
-        if (tv == null) {
-            throw new RuntimeException("This Toast was not created with Toast.makeText()");
-        }
-        tv.setText(s);
-    }
-    public static  void showTips(String msg) {
-        if (tipsToast != null) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                tipsToast.cancel();
-            }else{
-                tipsToast.setText(msg);
+            tipsToast.tvToast = (TextView) tipsToast.layoutToast.findViewById(R.id
+                    .tips_msg);
+            tipsToast.tvToast.setText(content);
+            if(res!=0){//有图片
+                tipsToast.ivToast=tipsToast.layoutToast.findViewById(R.id.tips_icon);
+                tipsToast.ivToast.setVisibility(View.VISIBLE);
+                tipsToast.ivToast.setImageResource(res);
             }
+            tipsToast.toast.setView(tipsToast.layoutToast);
+            tipsToast.toast.setDuration(Toast.LENGTH_SHORT);
+            tipsToast.toast.show();
+            lastTime = System.currentTimeMillis();
+            oldMsg = content;
         } else {
-            tipsToast = TipsToast.makeText(ContextHelper.getApplication(), msg, TipsToast.LENGTH_SHORT);
+            //小于Toast的显示时间
+            if (System.currentTimeMillis() - lastTime <= SHORT_DELAY) {
+                tipsToast.tvToast.setText(content);
+                oldMsg = content;
+                tipsToast.toast.setDuration(Toast.LENGTH_SHORT);
+                tipsToast.toast.show();
+                lastTime = System.currentTimeMillis();
+            } else {
+                tipsToast.tvToast.setText(content);
+                tipsToast.toast.setDuration(Toast.LENGTH_SHORT);
+                tipsToast.toast.show();
+                lastTime = System.currentTimeMillis();
+            }
         }
-        tipsToast.show();
     }
-    public static void showNewTips(String msg){
-        TipsToast.makeText(ContextHelper.getApplication(), msg, TipsToast.LENGTH_SHORT).show();
+
+    public static synchronized void cancelToast() {
+        if (null != tipsToast.toast) {
+            tipsToast.toast.cancel();
+        }
+        tipsToast.toast = null;
+        tipsToast.tvToast = null;
+        tipsToast.ivToast=null;
+        tipsToast.layoutToast = null;
     }
+
 }

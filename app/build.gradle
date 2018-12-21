@@ -61,7 +61,7 @@ android {
 
     productFlavors {
         android3601002 {
-            manifestPlaceholders = [APP_NAME     : "好彩头",
+            manifestPlaceholders = [APP_NAME     : "AndroidBaseMvp",
                                     CHANNEL_VALUE: "android3601002"]
         }
     }
