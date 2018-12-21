@@ -1,0 +1,32 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+    <!--不需要翻译的要加  tools:ignore="MissingTranslation"-->
+    <string name="app_name" translatable="false">HaoCaiTou</string>
+    <string name="netWorkError">"请检查网络设置"</string>
+    <string name="app_exit">再次点击退出</string>
+
+    <!--好彩头版本更新-->
+    <string name="app_name_thf">好彩头</string>
+    <string name="down_fail">下载失败</string>
+    <string name="is_downing">正在下载</string>
+    <string name="down_sucess">下载成功</string>
+    <string name="app_update">正在下载更新</string>
+    <string name="now_is_the_latest_version">当前已经是最新版本</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--fragmentTabHost-->
+    <string name="tab_home">首页</string>
+    <string name="tab_info">资讯</string>
+    <string name="tab_openLottery">开奖</string>
+    <string name="tab_mine">我的</string>
+    <!--自定义-->
+    <string name="cancel">取消</string>
+    <string name="album">相册中选择</string>
+    <string name="take_a_picture">拍照</string>
+    <string name="permission_write_external_storage_not_allow">存储设备读写权限未开启,可以在应用管理里重新开启</string>
+    <string name="permission_camera_not_allow">相机权限未开启,可以在应用管理里重新开启</string>
+    <string name="confirm">确定</string>
+    <string name="no_login">未登录</string>
+</resources>

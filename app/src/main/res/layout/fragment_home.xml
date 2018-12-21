@@ -1,0 +1,29 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+    <import type="com.yangfan.mvp.adapter.base.OnClickPresenter"/>
+        <import type="com.yangfan.mvp.adapter.base.OnLongClickPresenter"/>
+        <import type="com.yangfan.mvp.adapter.base.ItemModel"/>
+        <variable
+            name="viewModel"
+            type="ItemModel"/>
+        <variable
+            name="onLongClickPresenter"
+            type="OnLongClickPresenter"/>
+        <variable
+            name="onClickPresenter"
+            type="OnClickPresenter"/>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.yangfan.mvp.mvp.home.view.fragment.HomeFragment">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recy_home"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </FrameLayout>
+</layout>

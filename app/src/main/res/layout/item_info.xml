@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.yangfan.mvp.mvp.info.viewmodel.InfoVM"/>
+        <variable
+            name="onClickPresenter"
+            type="com.yangfan.mvp.adapter.base.OnClickPresenter"/>
+    </data>
+
+    <LinearLayout
+        android:onClick="@{(v)->onClickPresenter.onClick(v,viewModel)}"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="50dp">
+        <TextView
+            android:text="@{viewModel.title}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@{viewModel.source}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</layout>

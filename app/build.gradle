@@ -1,0 +1,112 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+
+    signingConfigs {
+        debugConfig {
+            keyAlias 'my_release_alias'
+            keyPassword '123456789'
+            storeFile file('../my_release_key.jks')
+            storePassword '123456789'
+        }
+        releaseConfig {
+            keyAlias 'my_release_alias'
+            keyPassword '123456789'
+            storeFile file('../my_release_key.jks')
+            storePassword '123456789'
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.yangfan.mvp"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //3.0之后项目配置productFlavors需要添加此代码
+        flavorDimensions "default"
+    }
+    dataBinding {
+        enabled true
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debugConfig
+        }
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.releaseConfig
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //plugin 3.0后的写法
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    if (outputFileName.endsWith('.apk')) {
+                        // 输出apk名称为android360V1.0.apk
+//                    def fileName = "${defaultConfig.versionName}.apk"
+                        def fileName = "${variant.productFlavors[0].name}${defaultConfig.versionName}.apk"
+                        outputFileName = fileName
+                    }
+                }
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    productFlavors {
+        android3601002 {
+            manifestPlaceholders = [APP_NAME     : "好彩头",
+                                    CHANNEL_VALUE: "android3601002"]
+        }
+    }
+}
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.7.0'
+    }
+}
+apply plugin: 'com.android.application'
+//3.0之后lambada不需要配置这一行
+//apply plugin: 'me.tatarka.retrolambda'
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    implementation 'com.android.support:support-v4:26.1.0'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile('com.github.yangfanCode:CommonKitLibrary:V1.3.1') {
+        exclude group: 'com.android.support'
+    }
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'com.github.jkyeo:okhttp-basicparamsinterceptor:v0.9'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar'
+    compile 'com.android.support:multidex:1.0.1'
+    implementation project(':AndroidPullToRefershLibrary')
+    implementation 'com.facebook.fresco:fresco:1.9.0'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:percent:26.1.0'
+    compile 'org.apmem.tools:layouts:1.10@aar'
+    compile(name: 'swipemenulist-release', ext: 'aar')
+
+}

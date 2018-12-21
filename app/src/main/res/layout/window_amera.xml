@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/window_amera"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:gravity="center"
+            android:text="@string/take_a_picture"
+            android:textColor="@color/color_20212A"
+            android:textSize="@dimen/text_size_16" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height_1px"
+            android:background="@color/xc_group_divider" />
+
+        <TextView
+            android:id="@+id/window_album"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:gravity="center"
+            android:text="@string/album"
+            android:textColor="@color/color_20212A"
+            android:textSize="@dimen/text_size_16" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height_1px"
+            android:background="@color/xc_group_divider" />
+
+        <TextView
+            android:id="@+id/window_clean"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/color_FF6960"
+            android:textSize="@dimen/text_size_16" />
+    </LinearLayout>
+
+</LinearLayout>

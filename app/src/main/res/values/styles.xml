@@ -1,0 +1,60 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:textColorHint">@color/text_hint_color</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:windowBackground">@color/colorWhite</item>
+    </style>
+    <style name="TranslucentTheme" parent="BaseAppTheme">
+        <!--在Android 4.4之前的版本上运行，直接跟随系统主题-->
+    </style>
+
+    <style name="Theme.Translucent_NoTitle_FullScreen" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="BaseAppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="progress_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    <style name="popWindow_animation">
+        <item name="android:windowEnterAnimation">@anim/popupwindow_enter</item>
+        <item name="android:windowExitAnimation">@anim/popupwindow_exit</item>
+    </style>
+    <style name="progress_dialog2" parent="progress_dialog">
+        <item name="android:backgroundDimAmount">0</item>
+    </style>
+    <!--actionbar 最右侧文字按钮 style-->
+    <style name="ActionBarRightButtonTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/action_bar_height</item>
+        <item name="android:background">@drawable/back_select_image</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:textColor">@color/color_20212A</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+    </style>
+
+    <!--文字style-->
+    <style name="textParent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="text4A4A4A_16" parent="textParent">
+        <item name="android:textColor">@color/color_4A4A4A</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
+</resources>
