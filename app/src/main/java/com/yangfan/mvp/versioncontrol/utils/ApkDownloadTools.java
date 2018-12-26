@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -14,8 +15,10 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -107,23 +110,25 @@ public class ApkDownloadTools {
 
                     if (downloadDialog != null) {//强制更新
                         downloadDialog.dismiss();
+                        installApk();//直接安装
                     } else {
                         if (notification != null) {
                             /*********下载完成，点击安装***********/
-                            Intent installApkIntent = getInstallApkIntent();
-                            if (installApkIntent != null) {
-                                pendingIntent = PendingIntent.getActivity(mContext, 0, installApkIntent, 0);
-                                notification.contentIntent = pendingIntent;
-                            }
-                            notification.flags = Notification.FLAG_AUTO_CANCEL;
-                            notification.defaults = Notification.DEFAULT_SOUND;//铃声提醒
-                            contentView.setTextViewText(R.id.notificationPercent, mContext.getString(R.string.down_sucess));
-                            notification.contentView = contentView;
-                            notificationManager.notify(R.layout.notification_item, notification);
+//                            Intent installApkIntent = getInstallApkIntent();
+//                            if (installApkIntent != null) {
+//                                pendingIntent = PendingIntent.getActivity(mContext, 0, installApkIntent, 0);
+//                                notification.contentIntent = pendingIntent;
+//                            }
+//                            notification.flags = Notification.FLAG_AUTO_CANCEL;
+//                            notification.defaults = Notification.DEFAULT_SOUND;//铃声提醒
+//                            contentView.setTextViewText(R.id.notificationPercent, mContext.getString(R.string.down_sucess));
+//                            notification.contentView = contentView;
+//                            notificationManager.notify(R.layout.notification_item, notification);
+                            cancelNotification();
+                            installApk();//直接安装
                         }
 
                     }
-                    installApk();//直接安装
                     break;
 
                 case DOWN_ERROR:
@@ -351,22 +356,27 @@ public class ApkDownloadTools {
      * @see
      */
     public void createNotification() {
-
-        notification = new Notification(
-                R.mipmap.ic_launcher,//应用的图标
-                mContext.getString(R.string.app_name_thf) + mContext.getString(R.string.is_downing),
-                System.currentTimeMillis());
-        notification.flags = Notification.FLAG_ONGOING_EVENT;
-        //notification.flags = Notification.FLAG_AUTO_CANCEL;
-
+        notificationManager =
+                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         /*** 自定义  Notification 的显示****/
         contentView = new RemoteViews(mContext.getPackageName(), R.layout.notification_item);
         contentView.setTextViewText(R.id.notificationTitle, mContext.getString(R.string.app_name_thf) + mContext.getString(R.string.is_downing));
         contentView.setTextViewText(R.id.notificationPercent, "0%");
         contentView.setProgressBar(R.id.notificationProgress, 100, 0, false);
-        notification.contentView = contentView;
-
-        notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        contentView.setImageViewResource(R.id.notificationImage, R.mipmap.ic_launcher);//logo
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel("android", "LendChain", NotificationManager.IMPORTANCE_LOW);
+            Log.i(TAG, mChannel.toString());
+            notificationManager.createNotificationChannel(mChannel);
+            notification = new NotificationCompat.Builder(mContext, "android")
+                    .setCustomContentView(contentView).setSmallIcon(R.mipmap.ic_launcher)//logo
+                    .build();
+        } else {
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+                    .setCustomContentView(contentView)
+                    .setSmallIcon(R.mipmap.ic_launcher);//logo
+            notification = notificationBuilder.build();
+        }
         notificationManager.notify(R.layout.notification_item, notification);
     }
 
