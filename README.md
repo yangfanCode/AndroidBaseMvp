@@ -1,2 +1,2 @@
 # AndroidBaseMvp
-空项目封装mvp
+Android retrofit2 rxJava2 databinding MVP模式
